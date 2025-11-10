@@ -453,16 +453,19 @@ export class ViewsService extends Disposable implements IViewsService {
 			}));
 
 			if (mnemonicTitle) {
-				const defaultLocation = this.viewDescriptorService.getDefaultViewContainerLocation(viewContainer);
-				disposables.add(MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-					command: {
-						id,
-						title: mnemonicTitle,
-					},
-					group: defaultLocation === ViewContainerLocation.Sidebar ? '3_sidebar' : defaultLocation === ViewContainerLocation.AuxiliaryBar ? '4_auxbar' : '5_panel',
-					when: ContextKeyExpr.has(getEnabledViewContainerContextKey(viewContainer.id)),
-					order: order ?? Number.MAX_VALUE
-				}));
+				// Only register Output view in the View menu
+				if (viewContainer.id === 'workbench.panel.output') {
+					const defaultLocation = this.viewDescriptorService.getDefaultViewContainerLocation(viewContainer);
+					disposables.add(MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
+						command: {
+							id,
+							title: mnemonicTitle,
+						},
+						group: defaultLocation === ViewContainerLocation.Sidebar ? '3_sidebar' : defaultLocation === ViewContainerLocation.AuxiliaryBar ? '4_auxbar' : '5_panel',
+						when: ContextKeyExpr.has(getEnabledViewContainerContextKey(viewContainer.id)),
+						order: order ?? Number.MAX_VALUE
+					}));
+				}
 			}
 		}
 
@@ -538,7 +541,8 @@ export class ViewsService extends Disposable implements IViewsService {
 
 		if (viewDescriptor.openCommandActionDescriptor?.mnemonicTitle) {
 			const defaultViewContainer = this.viewDescriptorService.getDefaultContainerById(viewDescriptor.id);
-			if (defaultViewContainer) {
+			// Only register Output view in the View menu
+			if (defaultViewContainer && viewDescriptor.id === 'workbench.panel.output') {
 				const defaultLocation = this.viewDescriptorService.getDefaultViewContainerLocation(defaultViewContainer);
 				disposables.add(MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
 					command: {

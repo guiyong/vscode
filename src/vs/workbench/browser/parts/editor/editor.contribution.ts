@@ -680,12 +680,7 @@ MenuRegistry.appendMenuItem(MenuId.MenubarRecentMenu, {
 // Removed: Share submenu from File menu
 
 // Layout menu
-MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-	group: '2_appearance',
-	title: localize({ key: 'miEditorLayout', comment: ['&& denotes a mnemonic'] }, "Editor &&Layout"),
-	submenu: MenuId.MenubarLayoutMenu,
-	order: 2
-});
+// Removed: Editor Layout submenu from View menu
 
 MenuRegistry.appendMenuItem(MenuId.MenubarLayoutMenu, {
 	group: '1_split',

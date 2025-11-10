@@ -52,32 +52,9 @@ quickAccessRegistry.registerQuickAccessProvider({
 
 //#region Menu contributions
 
-MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-	group: '1_open',
-	command: {
-		id: ShowAllCommandsAction.ID,
-		title: localize({ key: 'miCommandPalette', comment: ['&& denotes a mnemonic'] }, "&&Command Palette...")
-	},
-	order: 1
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '1_welcome',
-	command: {
-		id: ShowAllCommandsAction.ID,
-		title: localize({ key: 'miShowAllCommands', comment: ['&& denotes a mnemonic'] }, "Show All Commands")
-	},
-	order: 2
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-	group: '1_open',
-	command: {
-		id: OpenViewPickerAction.ID,
-		title: localize({ key: 'miOpenView', comment: ['&& denotes a mnemonic'] }, "&&Open View...")
-	},
-	order: 2
-});
+// Removed: Command Palette from View menu
+// Removed: Show All Commands from Help menu  
+// Removed: Open View from View menu
 
 MenuRegistry.appendMenuItem(MenuId.MenubarGoMenu, {
 	group: '5_infile_nav',
