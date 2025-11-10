@@ -17,7 +17,7 @@ import { Action2, MenuId, MenuRegistry, registerAction2 } from '../../../../plat
 import { CommandsRegistry, ICommandService } from '../../../../platform/commands/common/commands.js';
 import { ConfigurationTarget } from '../../../../platform/configuration/common/configuration.js';
 import { ContextKeyExpr } from '../../../../platform/contextkey/common/contextkey.js';
-import { InputFocusedContext, IsMacNativeContext } from '../../../../platform/contextkey/common/contextkeys.js';
+import { InputFocusedContext } from '../../../../platform/contextkey/common/contextkeys.js';
 import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
 import { IInstantiationService, ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
 import { KeybindingWeight, KeybindingsRegistry } from '../../../../platform/keybinding/common/keybindingsRegistry.js';
@@ -1421,11 +1421,4 @@ registerWorkbenchContribution2(SettingsEditorTitleContribution.ID, SettingsEdito
 registerEditorContribution(SettingsEditorContribution.ID, SettingsEditorContribution, EditorContributionInstantiation.AfterFirstRender);
 
 // Preferences menu
-
-MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
-	title: nls.localize({ key: 'miPreferences', comment: ['&& denotes a mnemonic'] }, "&&Preferences"),
-	submenu: MenuId.MenubarPreferencesMenu,
-	group: '5_autosave',
-	order: 2,
-	when: IsMacNativeContext.toNegated() // on macOS native the preferences menu is separate under the application menu
-});
+// Removed: Preferences submenu from File menu

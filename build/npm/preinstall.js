@@ -96,16 +96,11 @@ function installHeaders() {
 	const versions = new Set(result.split(/\n/g).filter(line => !line.startsWith('gyp info')).map(value => value));
 
 	const local = getHeaderInfo(path.join(__dirname, '..', '..', '.npmrc'));
-	const remote = getHeaderInfo(path.join(__dirname, '..', '..', 'remote', '.npmrc'));
+	// Removed: remote/.npmrc check as remote folder was removed
 
 	if (local !== undefined && !versions.has(local.target)) {
 		// Both disturl and target come from a file checked into our repository
 		cp.execFileSync(node_gyp, ['install', '--dist-url', local.disturl, local.target], { shell: true });
-	}
-
-	if (remote !== undefined && !versions.has(remote.target)) {
-		// Both disturl and target come from a file checked into our repository
-		cp.execFileSync(node_gyp, ['install', '--dist-url', remote.disturl, remote.target], { shell: true });
 	}
 }
 

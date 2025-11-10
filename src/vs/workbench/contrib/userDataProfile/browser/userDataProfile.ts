@@ -164,12 +164,7 @@ export class UserDataProfilesWorkbenchContribution extends Disposable implements
 	}
 
 	private registerOpenProfileSubMenu(): void {
-		MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
-			title: localize('New Profile Window', "New Window with Profile"),
-			submenu: OpenProfileMenu,
-			group: '1_new',
-			order: 4,
-		});
+		// Removed: New Window with Profile submenu from File menu
 	}
 
 	private readonly profilesDisposable = this._register(new MutableDisposable<DisposableStore>());

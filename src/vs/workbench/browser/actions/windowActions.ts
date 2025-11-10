@@ -6,10 +6,10 @@
 import { localize, localize2 } from '../../../nls.js';
 import { IWindowOpenable } from '../../../platform/window/common/window.js';
 import { IDialogService } from '../../../platform/dialogs/common/dialogs.js';
-import { MenuRegistry, MenuId, Action2, registerAction2 } from '../../../platform/actions/common/actions.js';
+import { MenuId, Action2, registerAction2 } from '../../../platform/actions/common/actions.js';
 import { KeyChord, KeyCode, KeyMod } from '../../../base/common/keyCodes.js';
 import { IsMainWindowFullscreenContext } from '../../common/contextkeys.js';
-import { IsMacNativeContext, IsDevelopmentContext, IsWebContext, IsIOSContext } from '../../../platform/contextkey/common/contextkeys.js';
+import { IsMacNativeContext, IsDevelopmentContext, IsIOSContext } from '../../../platform/contextkey/common/contextkeys.js';
 import { Categories } from '../../../platform/action/common/actionCommonCategories.js';
 import { KeybindingsRegistry, KeybindingWeight } from '../../../platform/keybinding/common/keybindingsRegistry.js';
 import { IQuickInputButton, IQuickInputService, IQuickPickSeparator, IKeyMods, IQuickPickItem } from '../../../platform/quickinput/common/quickInput.js';
@@ -409,11 +409,7 @@ class NewWindowAction extends Action2 {
 				primary: isWeb ? (isWindows ? KeyChord(KeyMod.CtrlCmd | KeyCode.KeyK, KeyMod.Shift | KeyCode.KeyN) : KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.KeyN) : KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.KeyN,
 				secondary: isWeb ? [KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.KeyN] : undefined
 			},
-			menu: {
-				id: MenuId.MenubarFileMenu,
-				group: '1_new',
-				order: 3
-			}
+			// Removed: menu registration for File menu
 		});
 	}
 
@@ -483,21 +479,4 @@ CommandsRegistry.registerCommand('workbench.action.toggleConfirmBeforeClose', ac
 });
 
 // --- Menu Registration
-
-MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
-	group: 'z_ConfirmClose',
-	command: {
-		id: 'workbench.action.toggleConfirmBeforeClose',
-		title: localize('miConfirmClose', "Confirm Before Close"),
-		toggled: ContextKeyExpr.notEquals('config.window.confirmBeforeClose', 'never')
-	},
-	order: 1,
-	when: IsWebContext
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
-	title: localize({ key: 'miOpenRecent', comment: ['&& denotes a mnemonic'] }, "Open &&Recent"),
-	submenu: MenuId.MenubarRecentMenu,
-	group: '2_open',
-	order: 4
-});
+// Removed: Confirm Before Close, Open Recent

@@ -677,12 +677,7 @@ MenuRegistry.appendMenuItem(MenuId.MenubarRecentMenu, {
 	order: 1
 });
 
-MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
-	title: localize('miShare', "Share"),
-	submenu: MenuId.MenubarShare,
-	group: '45_share',
-	order: 1,
-});
+// Removed: Share submenu from File menu
 
 // Layout menu
 MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
