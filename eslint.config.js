@@ -1839,6 +1839,7 @@ export default tseslint.config(
 						'vs/editor/contrib/*/~',
 						'vs/workbench/~',
 						'vs/workbench/services/*/~',
+						'vs/sandtek/contrib/*/~',
 						'assert',
 						{
 							'when': 'test',
@@ -1987,6 +1988,29 @@ export default tseslint.config(
 					]
 				},
 				{
+					'target': 'src/vs/sandtek/~',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/sandtek/~'
+					]
+				},
+				{
+					'target': 'src/vs/sandtek/contrib/tools/~',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/workbench/~',
+						'vs/workbench/services/*/~',
+						'vs/sandtek/~',
+						'vs/sandtek/contrib/tools/~'
+					]
+				},
+				{
 					'target': 'src/vs/workbench/contrib/terminal/terminal.all.ts',
 					'layer': 'browser',
 					'restrictions': [
@@ -2022,7 +2046,8 @@ export default tseslint.config(
 						'vs/workbench/api/~',
 						'vs/workbench/services/*/~',
 						'vs/workbench/contrib/*/~',
-						'vs/workbench/contrib/terminal/terminal.all.js'
+						'vs/workbench/contrib/terminal/terminal.all.js',
+						'vs/sandtek/contrib/tools/~'
 					]
 				},
 				{

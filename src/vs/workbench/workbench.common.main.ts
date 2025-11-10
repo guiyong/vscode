@@ -245,6 +245,9 @@ import './contrib/sash/browser/sash.contribution.js';
 // SCM
 import './contrib/scm/browser/scm.contribution.js';
 
+// Sandtek Tools
+import '../sandtek/contrib/tools/browser/tools.contribution.js';
+
 // Debug
 import './contrib/debug/browser/debug.contribution.js';
 import './contrib/debug/browser/debugEditorContribution.js';
