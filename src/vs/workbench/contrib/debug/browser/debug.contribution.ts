@@ -256,15 +256,7 @@ if (isMacintosh) {
 MenuRegistry.appendMenuItem(MenuId.EditorTitle, { submenu: MenuId.EditorTitleRun, isSplitButton: { togglePrimaryAction: true }, title: nls.localize2('run', "Run or Debug..."), icon: icons.debugRun, group: 'navigation', order: -1 });
 
 // Debug menu
-
-MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
-	submenu: MenuId.MenubarDebugMenu,
-	title: {
-		...nls.localize2('runMenu', "Run"),
-		mnemonicTitle: nls.localize({ key: 'mRun', comment: ['&& denotes a mnemonic'] }, "&&Run")
-	},
-	order: 6
-});
+// Removed: Run menu from main menubar
 
 MenuRegistry.appendMenuItem(MenuId.MenubarDebugMenu, {
 	group: '1_debug',

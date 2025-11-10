@@ -55,25 +55,11 @@ MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
 	order: 1
 });
 
-MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
-	submenu: MenuId.MenubarEditMenu,
-	title: {
-		value: 'Edit',
-		original: 'Edit',
-		mnemonicTitle: localize({ key: 'mEdit', comment: ['&& denotes a mnemonic'] }, "&&Edit")
-	},
-	order: 2
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
-	submenu: MenuId.MenubarSelectionMenu,
-	title: {
-		value: 'Selection',
-		original: 'Selection',
-		mnemonicTitle: localize({ key: 'mSelection', comment: ['&& denotes a mnemonic'] }, "&&Selection")
-	},
-	order: 3
-});
+// Removed: Edit menu
+// Removed: Selection menu
+// Removed: Go menu
+// Removed: Terminal menu
+// Removed: Help menu
 
 MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
 	submenu: MenuId.MenubarViewMenu,
@@ -83,36 +69,6 @@ MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
 		mnemonicTitle: localize({ key: 'mView', comment: ['&& denotes a mnemonic'] }, "&&View")
 	},
 	order: 4
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
-	submenu: MenuId.MenubarGoMenu,
-	title: {
-		value: 'Go',
-		original: 'Go',
-		mnemonicTitle: localize({ key: 'mGoto', comment: ['&& denotes a mnemonic'] }, "&&Go")
-	},
-	order: 5
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
-	submenu: MenuId.MenubarTerminalMenu,
-	title: {
-		value: 'Terminal',
-		original: 'Terminal',
-		mnemonicTitle: localize({ key: 'mTerminal', comment: ['&& denotes a mnemonic'] }, "&&Terminal")
-	},
-	order: 7
-});
-
-MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
-	submenu: MenuId.MenubarHelpMenu,
-	title: {
-		value: 'Help',
-		original: 'Help',
-		mnemonicTitle: localize({ key: 'mHelp', comment: ['&& denotes a mnemonic'] }, "&&Help")
-	},
-	order: 8
 });
 
 MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
