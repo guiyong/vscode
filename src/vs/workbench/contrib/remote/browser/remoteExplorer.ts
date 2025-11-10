@@ -69,15 +69,16 @@ export class ForwardedPortsView extends Disposable implements IWorkbenchContribu
 	}
 
 	private async getViewContainer(): Promise<ViewContainer | null> {
-		return Registry.as<IViewContainersRegistry>(Extensions.ViewContainersRegistry).registerViewContainer({
-			id: TUNNEL_VIEW_CONTAINER_ID,
-			title: nls.localize2('ports', "Ports"),
-			icon: portsViewIcon,
-			ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [TUNNEL_VIEW_CONTAINER_ID, { mergeViewWithContainerWhenSingleView: true }]),
-			storageId: TUNNEL_VIEW_CONTAINER_ID,
-			hideIfEmpty: true,
-			order: 5
-		}, ViewContainerLocation.Panel);
+		// return Registry.as<IViewContainersRegistry>(Extensions.ViewContainersRegistry).registerViewContainer({
+		// 	id: TUNNEL_VIEW_CONTAINER_ID,
+		// 	title: nls.localize2('ports', "Ports"),
+		// 	icon: portsViewIcon,
+		// 	ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [TUNNEL_VIEW_CONTAINER_ID, { mergeViewWithContainerWhenSingleView: true }]),
+		// 	storageId: TUNNEL_VIEW_CONTAINER_ID,
+		// 	hideIfEmpty: true,
+		// 	order: 5
+		// }, ViewContainerLocation.Panel);
+		return null;
 	}
 
 	private async enableForwardedPortsFeatures() {

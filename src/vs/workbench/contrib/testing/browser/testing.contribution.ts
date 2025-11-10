@@ -82,27 +82,28 @@ const viewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensio
 const viewContainer = null!; // Dummy to avoid breaking code that references this
 
 
-const testResultsViewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({
-	id: Testing.ResultsPanelId,
-	title: localize2('testResultsPanelName', "Test Results"),
-	icon: testingResultsIcon,
-	ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [Testing.ResultsPanelId, { mergeViewWithContainerWhenSingleView: true }]),
-	hideIfEmpty: true,
-	order: 3,
-}, ViewContainerLocation.Panel, { doNotRegisterOpenCommand: true });
+// const testResultsViewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({
+// 	id: Testing.ResultsPanelId,
+// 	title: localize2('testResultsPanelName', "Test Results"),
+// 	icon: testingResultsIcon,
+// 	ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [Testing.ResultsPanelId, { mergeViewWithContainerWhenSingleView: true }]),
+// 	hideIfEmpty: true,
+// 	order: 3,
+// }, ViewContainerLocation.Panel, { doNotRegisterOpenCommand: true });
+const testResultsViewContainer = null!;
 
 const viewsRegistry = Registry.as<IViewsRegistry>(ViewContainerExtensions.ViewsRegistry);
 
 
-viewsRegistry.registerViews([{
-	id: Testing.ResultsViewId,
-	name: localize2('testResultsPanelName', "Test Results"),
-	containerIcon: testingResultsIcon,
-	canToggleVisibility: false,
-	canMoveView: true,
-	when: TestingContextKeys.hasAnyResults.isEqualTo(true),
-	ctorDescriptor: new SyncDescriptor(TestResultsView),
-}], testResultsViewContainer);
+// viewsRegistry.registerViews([{
+// 	id: Testing.ResultsViewId,
+// 	name: localize2('testResultsPanelName', "Test Results"),
+// 	containerIcon: testingResultsIcon,
+// 	canToggleVisibility: false,
+// 	canMoveView: true,
+// 	when: TestingContextKeys.hasAnyResults.isEqualTo(true),
+// 	ctorDescriptor: new SyncDescriptor(TestResultsView),
+// }], testResultsViewContainer);
 
 viewsRegistry.registerViewWelcomeContent(Testing.ExplorerViewId, {
 	content: localize('noTestProvidersRegistered', "No tests have been found in this workspace yet."),
