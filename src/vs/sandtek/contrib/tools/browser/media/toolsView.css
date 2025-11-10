@@ -1,0 +1,42 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.tools-view-content {
+	padding: 8px;
+}
+
+.tools-view-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.tools-view-actions .action-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
+	border-radius: 5px;
+	color: inherit;
+}
+
+.tools-view-actions .action-label:hover {
+	background-color: var(--vscode-toolbar-hoverBackground);
+}
+
+.tools-view-actions .action-label:active {
+	background-color: var(--vscode-toolbar-activeBackground);
+}
+
+.tools-view-actions .action-label:focus {
+	outline: 1px solid var(--vscode-focusBorder);
+	outline-offset: -1px;
+}
+
+.tools-view-actions .action-label.codicon {
+	font-size: 16px;
+}
