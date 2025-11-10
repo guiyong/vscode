@@ -12,6 +12,11 @@ import { ToolsViewPaneContainer } from './toolsViewPaneContainer.js';
 import { ToolsView } from './toolsView.js';
 import { toolsViewIcon } from './toolsIcons.js';
 import { KeyMod, KeyCode } from '../../../../base/common/keyCodes.js';
+import { EditorExtensions, IEditorSerializer, IEditorFactoryRegistry } from '../../../../workbench/common/editor.js';
+import { IEditorPaneRegistry, EditorPaneDescriptor } from '../../../../workbench/browser/editor.js';
+import { StilSignalEditor } from './stilSignalEditor.js';
+import { StilSignalEditorInput } from './stilSignalEditorInput.js';
+import { EditorInput } from '../../../../workbench/common/editor/editorInput.js';
 
 // Register the Tools view container in the Activity Bar
 const viewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({
@@ -52,3 +57,35 @@ viewsRegistry.registerViewWelcomeContent(VIEW_ID, {
 	content: localize('noToolsAvailable', "No tools available yet.\n[Add Tool](command:workbench.action.openSettings)"),
 	when: 'default'
 });
+
+// Register STIL Signal Editor
+Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
+	EditorPaneDescriptor.create(
+		StilSignalEditor,
+		StilSignalEditor.ID,
+		localize('stilSignalEditor', "STIL Signal Editor")
+	),
+	[
+		new SyncDescriptor(StilSignalEditorInput)
+	]
+);
+
+// Register STIL Signal Editor Input Serializer
+class StilSignalEditorInputSerializer implements IEditorSerializer {
+	canSerialize(): boolean {
+		return true;
+	}
+
+	serialize(): string {
+		return '';
+	}
+
+	deserialize(): EditorInput {
+		return new StilSignalEditorInput();
+	}
+}
+
+Registry.as<IEditorFactoryRegistry>(EditorExtensions.EditorFactory).registerEditorSerializer(
+	StilSignalEditorInput.ID,
+	StilSignalEditorInputSerializer
+);
