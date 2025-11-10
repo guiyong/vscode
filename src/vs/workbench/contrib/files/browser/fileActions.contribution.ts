@@ -185,13 +185,13 @@ function appendSaveConflictEditorTitleAction(id: string, title: string, icon: Th
 	// Command
 	CommandsRegistry.registerCommand(id, command);
 
-	// Action
-	MenuRegistry.appendMenuItem(MenuId.EditorTitle, {
-		command: { id, title, icon },
-		when: ContextKeyExpr.equals(CONFLICT_RESOLUTION_CONTEXT, true),
-		group: 'navigation',
-		order
-	});
+	// Action - DISABLED: Editor title menu items removed
+	// MenuRegistry.appendMenuItem(MenuId.EditorTitle, {
+	// 	command: { id, title, icon },
+	// 	when: ContextKeyExpr.equals(CONFLICT_RESOLUTION_CONTEXT, true),
+	// 	group: 'navigation',
+	// 	order
+	// });
 }
 
 // Menu registration - command palette
