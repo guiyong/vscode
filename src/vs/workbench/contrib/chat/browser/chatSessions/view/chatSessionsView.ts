@@ -3,27 +3,16 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Codicon } from '../../../../../../base/common/codicons.js';
 import { Disposable } from '../../../../../../base/common/lifecycle.js';
 import * as nls from '../../../../../../nls.js';
-import { IConfigurationService } from '../../../../../../platform/configuration/common/configuration.js';
 import { ContextKeyExpr } from '../../../../../../platform/contextkey/common/contextkey.js';
-import { IContextMenuService } from '../../../../../../platform/contextview/browser/contextView.js';
 import { SyncDescriptor } from '../../../../../../platform/instantiation/common/descriptors.js';
 import { IInstantiationService } from '../../../../../../platform/instantiation/common/instantiation.js';
 import { ILogService } from '../../../../../../platform/log/common/log.js';
 import { IProductService } from '../../../../../../platform/product/common/productService.js';
 import { Registry } from '../../../../../../platform/registry/common/platform.js';
-import { IStorageService } from '../../../../../../platform/storage/common/storage.js';
-import { ITelemetryService } from '../../../../../../platform/telemetry/common/telemetry.js';
-import { registerIcon } from '../../../../../../platform/theme/common/iconRegistry.js';
-import { IThemeService } from '../../../../../../platform/theme/common/themeService.js';
-import { IWorkspaceContextService } from '../../../../../../platform/workspace/common/workspace.js';
-import { ViewPaneContainer } from '../../../../../browser/parts/views/viewPaneContainer.js';
 import { IWorkbenchContribution } from '../../../../../common/contributions.js';
-import { Extensions, IViewContainersRegistry, IViewDescriptor, IViewDescriptorService, IViewsRegistry, ViewContainerLocation } from '../../../../../common/views.js';
-import { IExtensionService } from '../../../../../services/extensions/common/extensions.js';
-import { IWorkbenchLayoutService } from '../../../../../services/layout/browser/layoutService.js';
+import { Extensions, IViewContainersRegistry, IViewDescriptor, IViewsRegistry } from '../../../../../common/views.js';
 import { ChatContextKeyExprs } from '../../../common/chatContextKeys.js';
 import { IChatSessionItemProvider, IChatSessionsExtensionPoint, IChatSessionsService, localChatSessionType } from '../../../common/chatSessionsService.js';
 import { AGENT_SESSIONS_VIEWLET_ID } from '../../../common/constants.js';
@@ -35,8 +24,11 @@ export class ChatSessionsView extends Disposable implements IWorkbenchContributi
 	static readonly ID = 'workbench.contrib.chatSessionsView';
 	constructor() {
 		super();
-		this.registerViewContainer();
+		// Commented out - removing Agent Sessions from activity bar
+		// this.registerViewContainer();
 	}
+	// Commented out - removing Agent Sessions from activity bar
+	/*
 	private registerViewContainer(): void {
 		Registry.as<IViewContainersRegistry>(Extensions.ViewContainersRegistry).registerViewContainer(
 			{
@@ -48,6 +40,7 @@ export class ChatSessionsView extends Disposable implements IWorkbenchContributi
 				order: 6
 			}, ViewContainerLocation.Sidebar);
 	}
+	*/
 
 }
 
@@ -244,6 +237,8 @@ export class ChatSessionsViewContrib extends Disposable implements IWorkbenchCon
 	}
 }
 
+// Commented out - removing Agent Sessions from activity bar
+/*
 // Chat sessions container
 class ChatSessionsViewPaneContainer extends ViewPaneContainer {
 	constructor(
@@ -283,3 +278,4 @@ class ChatSessionsViewPaneContainer extends ViewPaneContainer {
 		return title;
 	}
 }
+*/
