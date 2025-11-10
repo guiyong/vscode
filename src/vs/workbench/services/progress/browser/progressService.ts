@@ -68,7 +68,9 @@ export class ProgressService extends Disposable implements IProgressService {
 				return this.withViewProgress(location, task, { ...options, location });
 			}
 
-			throw new Error(`Bad progress location: ${location}`);
+			// FALLBACK: If view container doesn't exist (was removed), show progress in window instead
+			console.warn(`Progress location '${location}' not found, falling back to window progress`);
+			return this.withWindowProgress({ ...options, location: ProgressLocation.Window }, task);
 		};
 
 		if (typeof location === 'string') {
