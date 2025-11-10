@@ -60,6 +60,8 @@ registerSingleton(ITestExplorerFilterState, TestExplorerFilterState, Instantiati
 registerSingleton(ITestingPeekOpener, TestingPeekOpener, InstantiationType.Delayed);
 registerSingleton(ITestingDecorationsService, TestingDecorationService, InstantiationType.Delayed);
 
+// Commented out - removing Testing from activity bar
+/*
 const viewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({
 	id: Testing.ViewletId,
 	title: localize2('test', 'Testing'),
@@ -76,6 +78,8 @@ const viewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensio
 	},
 	hideIfEmpty: true,
 }, ViewContainerLocation.Sidebar);
+*/
+const viewContainer = null!; // Dummy to avoid breaking code that references this
 
 
 const testResultsViewContainer = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({

@@ -893,10 +893,11 @@ export class ShowInstalledMcpServersCommand extends Action2 {
 	async run(accessor: ServicesAccessor) {
 		const viewsService = accessor.get(IViewsService);
 		const view = await viewsService.openView(InstalledMcpServersViewId, true);
-		if (!view) {
-			await viewsService.openViewContainer(VIEW_CONTAINER.id);
-			await viewsService.openView(InstalledMcpServersViewId, true);
-		}
+		// Commented out - Extensions view container removed from activity bar
+		// if (!view) {
+		// 	await viewsService.openViewContainer(VIEW_CONTAINER.id);
+		// 	await viewsService.openView(InstalledMcpServersViewId, true);
+		// }
 	}
 }
 

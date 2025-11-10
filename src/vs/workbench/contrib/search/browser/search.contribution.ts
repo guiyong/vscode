@@ -56,6 +56,8 @@ registerWorkbenchContribution2(SearchChatContextContribution.ID, SearchChatConte
 
 const SEARCH_MODE_CONFIG = 'search.mode';
 
+// Commented out - removing Search from activity bar
+/*
 const viewContainer = Registry.as<IViewContainersRegistry>(ViewExtensions.ViewContainersRegistry).registerViewContainer({
 	id: VIEWLET_ID,
 	title: nls.localize2('search', "Search"),
@@ -64,7 +66,11 @@ const viewContainer = Registry.as<IViewContainersRegistry>(ViewExtensions.ViewCo
 	icon: searchViewIcon,
 	order: 1,
 }, ViewContainerLocation.Sidebar, { doNotRegisterOpenCommand: true });
+*/
+const viewContainer = null!; // Dummy to avoid breaking code that references this
 
+// Commented out - view descriptor and registration for Search view
+/*
 const viewDescriptor: IViewDescriptor = {
 	id: VIEW_ID,
 	containerIcon: searchViewIcon,
@@ -86,6 +92,7 @@ const viewDescriptor: IViewDescriptor = {
 
 // Register search default location to sidebar
 Registry.as<IViewsRegistry>(ViewExtensions.ViewsRegistry).registerViews([viewDescriptor], viewContainer);
+*/
 
 // Register Quick Access Handler
 const quickAccessRegistry = Registry.as<IQuickAccessRegistry>(QuickAccessExtensions.Quickaccess);

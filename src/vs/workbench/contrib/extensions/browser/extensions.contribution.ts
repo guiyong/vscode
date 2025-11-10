@@ -111,6 +111,8 @@ Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane
 		new SyncDescriptor(ExtensionsInput)
 	]);
 
+// Commented out - removing Extensions from activity bar
+/*
 export const VIEW_CONTAINER = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer(
 	{
 		id: VIEWLET_ID,
@@ -127,6 +129,8 @@ export const VIEW_CONTAINER = Registry.as<IViewContainersRegistry>(ViewContainer
 		rejectAddedViews: true,
 		alwaysUseContainerInfo: true,
 	}, ViewContainerLocation.Sidebar);
+*/
+export const VIEW_CONTAINER = null!; // Dummy to avoid breaking code that references this
 
 Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration)
 	.registerConfiguration({

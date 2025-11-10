@@ -440,6 +440,8 @@ Registry.as<IViewsRegistry>(ViewExtensions.ViewsRegistry).registerViews([{
 }], VIEW_CONTAINER);
 
 
+// Commented out - removing Debug/Run from activity bar
+/*
 const viewContainer = Registry.as<IViewContainersRegistry>(ViewExtensions.ViewContainersRegistry).registerViewContainer({
 	id: VIEWLET_ID,
 	title: nls.localize2('run and debug', "Run and Debug"),
@@ -454,6 +456,8 @@ const viewContainer = Registry.as<IViewContainersRegistry>(ViewExtensions.ViewCo
 	alwaysUseContainerInfo: true,
 	order: 3,
 }, ViewContainerLocation.Sidebar);
+*/
+const viewContainer = null!; // Dummy to avoid breaking code that references this
 
 // Register default debug views
 const viewsRegistry = Registry.as<IViewsRegistry>(ViewExtensions.ViewsRegistry);
