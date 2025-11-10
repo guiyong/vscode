@@ -29,7 +29,7 @@ import { Action2, IMenu, IMenuService, MenuId, registerAction2 } from '../../../
 import { IContextKey, IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
 import { IHostService } from '../../../services/host/browser/host.js';
 import { WindowTitle } from './windowTitle.js';
-import { CommandCenterControl } from './commandCenterControl.js';
+// import { CommandCenterControl } from './commandCenterControl.js'; // REMOVED: Command center disabled
 import { Categories } from '../../../../platform/action/common/actionCommonCategories.js';
 import { WorkbenchToolBar } from '../../../../platform/actions/browser/toolbar.js';
 import { ACCOUNTS_ACTIVITY_ID, GLOBAL_ACTIVITY_ID } from '../../../common/activity.js';
@@ -347,11 +347,12 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 			oldPartOptions.editorActionsLocation !== newPartOptions.editorActionsLocation ||
 			oldPartOptions.showTabs !== newPartOptions.showTabs
 		) {
-			if (hasCustomTitlebar(this.configurationService, this.titleBarStyle) && this.actionToolBar) {
-				this.createActionToolBar();
-				this.createActionToolBarMenus({ editorActions: true });
-				this._onDidChange.fire(undefined);
-			}
+			// DISABLED: Toolbar actions removed
+			// if (hasCustomTitlebar(this.configurationService, this.titleBarStyle) && this.actionToolBar) {
+			// 	this.createActionToolBar();
+			// 	this.createActionToolBarMenus({ editorActions: true });
+			// 	this._onDidChange.fire(undefined);
+			// }
 		}
 	}
 
@@ -368,17 +369,17 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 			}
 		}
 
-		// Actions
-		if (hasCustomTitlebar(this.configurationService, this.titleBarStyle) && this.actionToolBar) {
-			const affectsLayoutControl = event.affectsConfiguration(LayoutSettings.LAYOUT_ACTIONS);
-			const affectsActivityControl = event.affectsConfiguration(LayoutSettings.ACTIVITY_BAR_LOCATION);
+		// Actions - DISABLED: Toolbar actions removed
+		// if (hasCustomTitlebar(this.configurationService, this.titleBarStyle) && this.actionToolBar) {
+		// 	const affectsLayoutControl = event.affectsConfiguration(LayoutSettings.LAYOUT_ACTIONS);
+		// 	const affectsActivityControl = event.affectsConfiguration(LayoutSettings.ACTIVITY_BAR_LOCATION);
 
-			if (affectsLayoutControl || affectsActivityControl) {
-				this.createActionToolBarMenus({ layoutActions: affectsLayoutControl, activityActions: affectsActivityControl });
+		// 	if (affectsLayoutControl || affectsActivityControl) {
+		// 		this.createActionToolBarMenus({ layoutActions: affectsLayoutControl, activityActions: affectsActivityControl });
 
-				this._onDidChange.fire(undefined);
-			}
-		}
+		// 		this._onDidChange.fire(undefined);
+		// 	}
+		// }
 
 		// Command Center
 		if (event.affectsConfiguration(LayoutSettings.COMMAND_CENTER)) {
@@ -400,7 +401,7 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 
 		if (oldIsCompact !== this.isCompact) {
 			this.recreateTitle();
-			this.createActionToolBarMenus(true);
+			// this.createActionToolBarMenus(true); // DISABLED: Toolbar actions removed
 		}
 	}
 
@@ -476,12 +477,12 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		this.title = append(this.centerContent, $('div.window-title'));
 		this.createTitle();
 
-		// Create Toolbar Actions
-		if (hasCustomTitlebar(this.configurationService, this.titleBarStyle)) {
-			this.actionToolBarElement = append(this.rightContent, $('div.action-toolbar-container'));
-			this.createActionToolBar();
-			this.createActionToolBarMenus();
-		}
+		// Create Toolbar Actions - DISABLED: Remove all toolbar elements
+		// if (hasCustomTitlebar(this.configurationService, this.titleBarStyle)) {
+		// 	this.actionToolBarElement = append(this.rightContent, $('div.action-toolbar-container'));
+		// 	this.createActionToolBar();
+		// 	this.createActionToolBarMenus();
+		// }
 
 		// Window Controls Container
 		if (!hasNativeTitlebar(this.configurationService, this.titleBarStyle)) {
@@ -559,8 +560,8 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 
 		const isShowingTitleInNativeTitlebar = hasNativeTitlebar(this.configurationService, this.titleBarStyle);
 
-		// Text Title
-		if (!this.isCommandCenterVisible) {
+		// Text Title - MODIFIED: Always show text title, never command center
+		// if (!this.isCommandCenterVisible) {
 			if (!isShowingTitleInNativeTitlebar) {
 				this.title.textContent = this.windowTitle.value;
 				this.titleDisposables.add(this.windowTitle.onDidChange(() => {
@@ -572,14 +573,14 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 			} else {
 				reset(this.title);
 			}
-		}
+		// }
 
-		// Menu Title
-		else {
-			const commandCenter = this.instantiationService.createInstance(CommandCenterControl, this.windowTitle, this.hoverDelegate);
-			reset(this.title, commandCenter.element);
-			this.titleDisposables.add(commandCenter);
-		}
+		// Menu Title - DISABLED: Command center removed
+		// else {
+		// 	const commandCenter = this.instantiationService.createInstance(CommandCenterControl, this.windowTitle, this.hoverDelegate);
+		// 	reset(this.title, commandCenter.element);
+		// 	this.titleDisposables.add(commandCenter);
+		// }
 	}
 
 	private actionViewItemProvider(action: IAction, options: IBaseActionViewItemOptions): IActionViewItem | undefined {
@@ -614,136 +615,138 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		return this.keybindingService.lookupKeybinding(action.id, editorPaneAwareContextKeyService);
 	}
 
-	private createActionToolBar(): void {
+	// DISABLED: Action toolbar removed from title bar
+	// private createActionToolBar(): void {
 
-		// Creates the action tool bar. Depends on the configuration of the title bar menus
-		// Requires to be recreated whenever editor actions enablement changes
+	// 	// Creates the action tool bar. Depends on the configuration of the title bar menus
+	// 	// Requires to be recreated whenever editor actions enablement changes
 
-		this.actionToolBarDisposable.clear();
+	// 	this.actionToolBarDisposable.clear();
 
-		this.actionToolBar = this.actionToolBarDisposable.add(this.instantiationService.createInstance(WorkbenchToolBar, this.actionToolBarElement, {
-			contextMenu: MenuId.TitleBarContext,
-			orientation: ActionsOrientation.HORIZONTAL,
-			ariaLabel: localize('ariaLabelTitleActions', "Title actions"),
-			getKeyBinding: action => this.getKeybinding(action),
-			overflowBehavior: { maxItems: 9, exempted: [ACCOUNTS_ACTIVITY_ID, GLOBAL_ACTIVITY_ID, ...EDITOR_CORE_NAVIGATION_COMMANDS] },
-			anchorAlignmentProvider: () => AnchorAlignment.RIGHT,
-			telemetrySource: 'titlePart',
-			highlightToggledItems: this.editorActionsEnabled || this.isAuxiliary, // Only show toggled state for editor actions or auxiliary title bars
-			actionViewItemProvider: (action, options) => this.actionViewItemProvider(action, options),
-			hoverDelegate: this.hoverDelegate
-		}));
+	// 	this.actionToolBar = this.actionToolBarDisposable.add(this.instantiationService.createInstance(WorkbenchToolBar, this.actionToolBarElement, {
+	// 		contextMenu: MenuId.TitleBarContext,
+	// 		orientation: ActionsOrientation.HORIZONTAL,
+	// 		ariaLabel: localize('ariaLabelTitleActions', "Title actions"),
+	// 		getKeyBinding: action => this.getKeybinding(action),
+	// 		overflowBehavior: { maxItems: 9, exempted: [ACCOUNTS_ACTIVITY_ID, GLOBAL_ACTIVITY_ID, ...EDITOR_CORE_NAVIGATION_COMMANDS] },
+	// 		anchorAlignmentProvider: () => AnchorAlignment.RIGHT,
+	// 		telemetrySource: 'titlePart',
+	// 		highlightToggledItems: this.editorActionsEnabled || this.isAuxiliary, // Only show toggled state for editor actions or auxiliary title bars
+	// 		actionViewItemProvider: (action, options) => this.actionViewItemProvider(action, options),
+	// 		hoverDelegate: this.hoverDelegate
+	// 	}));
 
-		if (this.editorActionsEnabled) {
-			this.actionToolBarDisposable.add(this.editorGroupsContainer.onDidChangeActiveGroup(() => this.createActionToolBarMenus({ editorActions: true })));
-		}
-	}
+	// 	if (this.editorActionsEnabled) {
+	// 		this.actionToolBarDisposable.add(this.editorGroupsContainer.onDidChangeActiveGroup(() => this.createActionToolBarMenus({ editorActions: true })));
+	// 	}
+	// }
 
-	private createActionToolBarMenus(update: true | { editorActions?: boolean; layoutActions?: boolean; globalActions?: boolean; activityActions?: boolean } = true): void {
-		if (update === true) {
-			update = { editorActions: true, layoutActions: true, globalActions: true, activityActions: true };
-		}
+	// DISABLED: Action toolbar menus removed from title bar
+	// private createActionToolBarMenus(update: true | { editorActions?: boolean; layoutActions?: boolean; globalActions?: boolean; activityActions?: boolean } = true): void {
+	// 	if (update === true) {
+	// 		update = { editorActions: true, layoutActions: true, globalActions: true, activityActions: true };
+	// 	}
 
-		const updateToolBarActions = () => {
-			const actions: IToolbarActions = { primary: [], secondary: [] };
+	// 	const updateToolBarActions = () => {
+	// 		const actions: IToolbarActions = { primary: [], secondary: [] };
 
-			// --- Editor Actions
-			if (this.editorActionsEnabled) {
-				this.editorActionsChangeDisposable.clear();
+	// 		// --- Editor Actions
+	// 		if (this.editorActionsEnabled) {
+	// 			this.editorActionsChangeDisposable.clear();
 
-				const activeGroup = this.editorGroupsContainer.activeGroup;
-				if (activeGroup) {
-					const editorActions = activeGroup.createEditorActions(this.editorActionsChangeDisposable, this.isAuxiliary && this.isCompact ? MenuId.CompactWindowEditorTitle : MenuId.EditorTitle);
+	// 			const activeGroup = this.editorGroupsContainer.activeGroup;
+	// 			if (activeGroup) {
+	// 				const editorActions = activeGroup.createEditorActions(this.editorActionsChangeDisposable, this.isAuxiliary && this.isCompact ? MenuId.CompactWindowEditorTitle : MenuId.EditorTitle);
 
-					actions.primary.push(...editorActions.actions.primary);
-					actions.secondary.push(...editorActions.actions.secondary);
+	// 				actions.primary.push(...editorActions.actions.primary);
+	// 				actions.secondary.push(...editorActions.actions.secondary);
 
-					this.editorActionsChangeDisposable.add(editorActions.onDidChange(() => updateToolBarActions()));
-				}
-			}
+	// 				this.editorActionsChangeDisposable.add(editorActions.onDidChange(() => updateToolBarActions()));
+	// 			}
+	// 		}
 
-			// --- Global Actions
-			if (this.globalToolbarMenu) {
-				fillInActionBarActions(
-					this.globalToolbarMenu.getActions(),
-					actions
-				);
-			}
+	// 		// --- Global Actions
+	// 		if (this.globalToolbarMenu) {
+	// 			fillInActionBarActions(
+	// 				this.globalToolbarMenu.getActions(),
+	// 				actions
+	// 			);
+	// 		}
 
-			// --- Layout Actions
-			if (this.layoutToolbarMenu) {
-				fillInActionBarActions(
-					this.layoutToolbarMenu.getActions(),
-					actions,
-					() => !this.editorActionsEnabled || this.isCompact // layout actions move to "..." if editor actions are enabled unless compact
-				);
-			}
+	// 		// --- Layout Actions
+	// 		if (this.layoutToolbarMenu) {
+	// 			fillInActionBarActions(
+	// 				this.layoutToolbarMenu.getActions(),
+	// 				actions,
+	// 				() => !this.editorActionsEnabled || this.isCompact // layout actions move to "..." if editor actions are enabled unless compact
+	// 			);
+	// 		}
 
-			// --- Activity Actions (always at the end)
-			if (this.activityActionsEnabled) {
-				if (isAccountsActionVisible(this.storageService)) {
-					actions.primary.push(ACCOUNTS_ACTIVITY_TILE_ACTION);
-				}
+	// 		// --- Activity Actions (always at the end)
+	// 		if (this.activityActionsEnabled) {
+	// 			if (isAccountsActionVisible(this.storageService)) {
+	// 				actions.primary.push(ACCOUNTS_ACTIVITY_TILE_ACTION);
+	// 			}
 
-				actions.primary.push(GLOBAL_ACTIVITY_TITLE_ACTION);
-			}
+	// 			actions.primary.push(GLOBAL_ACTIVITY_TITLE_ACTION);
+	// 		}
 
-			this.actionToolBar.setActions(prepareActions(actions.primary), prepareActions(actions.secondary));
-		};
+	// 		this.actionToolBar.setActions(prepareActions(actions.primary), prepareActions(actions.secondary));
+	// 	};
 
-		// Create/Update the menus which should be in the title tool bar
+	// 	// Create/Update the menus which should be in the title tool bar
 
-		if (update.editorActions) {
-			this.editorToolbarMenuDisposables.clear();
+	// 	if (update.editorActions) {
+	// 		this.editorToolbarMenuDisposables.clear();
 
-			// The editor toolbar menu is handled by the editor group so we do not need to manage it here.
-			// However, depending on the active editor, we need to update the context and action runner of the toolbar menu.
-			if (this.editorActionsEnabled && this.editorService.activeEditor !== undefined) {
-				const context: IEditorCommandsContext = { groupId: this.editorGroupsContainer.activeGroup.id };
+	// 		// The editor toolbar menu is handled by the editor group so we do not need to manage it here.
+	// 		// However, depending on the active editor, we need to update the context and action runner of the toolbar menu.
+	// 		if (this.editorActionsEnabled && this.editorService.activeEditor !== undefined) {
+	// 			const context: IEditorCommandsContext = { groupId: this.editorGroupsContainer.activeGroup.id };
 
-				this.actionToolBar.actionRunner = this.editorToolbarMenuDisposables.add(new EditorCommandsContextActionRunner(context));
-				this.actionToolBar.context = context;
-			} else {
-				this.actionToolBar.actionRunner = this.editorToolbarMenuDisposables.add(new ActionRunner());
-				this.actionToolBar.context = undefined;
-			}
-		}
+	// 			this.actionToolBar.actionRunner = this.editorToolbarMenuDisposables.add(new EditorCommandsContextActionRunner(context));
+	// 			this.actionToolBar.context = context;
+	// 		} else {
+	// 			this.actionToolBar.actionRunner = this.editorToolbarMenuDisposables.add(new ActionRunner());
+	// 			this.actionToolBar.context = undefined;
+	// 		}
+	// 	}
 
-		if (update.layoutActions) {
-			this.layoutToolbarMenuDisposables.clear();
+	// 	if (update.layoutActions) {
+	// 		this.layoutToolbarMenuDisposables.clear();
 
-			if (this.layoutControlEnabled) {
-				this.layoutToolbarMenu = this.menuService.createMenu(MenuId.LayoutControlMenu, this.contextKeyService);
+	// 		if (this.layoutControlEnabled) {
+	// 			this.layoutToolbarMenu = this.menuService.createMenu(MenuId.LayoutControlMenu, this.contextKeyService);
 
-				this.layoutToolbarMenuDisposables.add(this.layoutToolbarMenu);
-				this.layoutToolbarMenuDisposables.add(this.layoutToolbarMenu.onDidChange(() => updateToolBarActions()));
-			} else {
-				this.layoutToolbarMenu = undefined;
-			}
-		}
+	// 			this.layoutToolbarMenuDisposables.add(this.layoutToolbarMenu);
+	// 			this.layoutToolbarMenuDisposables.add(this.layoutToolbarMenu.onDidChange(() => updateToolBarActions()));
+	// 		} else {
+	// 			this.layoutToolbarMenu = undefined;
+	// 		}
+	// 	}
 
-		if (update.globalActions) {
-			this.globalToolbarMenuDisposables.clear();
+	// 	if (update.globalActions) {
+	// 		this.globalToolbarMenuDisposables.clear();
 
-			if (this.globalActionsEnabled) {
-				this.globalToolbarMenu = this.menuService.createMenu(MenuId.TitleBar, this.contextKeyService);
+	// 		if (this.globalActionsEnabled) {
+	// 			this.globalToolbarMenu = this.menuService.createMenu(MenuId.TitleBar, this.contextKeyService);
 
-				this.globalToolbarMenuDisposables.add(this.globalToolbarMenu);
-				this.globalToolbarMenuDisposables.add(this.globalToolbarMenu.onDidChange(() => updateToolBarActions()));
-			} else {
-				this.globalToolbarMenu = undefined;
-			}
-		}
+	// 			this.globalToolbarMenuDisposables.add(this.globalToolbarMenu);
+	// 			this.globalToolbarMenuDisposables.add(this.globalToolbarMenu.onDidChange(() => updateToolBarActions()));
+	// 		} else {
+	// 			this.globalToolbarMenu = undefined;
+	// 		}
+	// 	}
 
-		if (update.activityActions) {
-			this.activityToolbarDisposables.clear();
-			if (this.activityActionsEnabled) {
-				this.activityToolbarDisposables.add(this.storageService.onDidChangeValue(StorageScope.PROFILE, AccountsActivityActionViewItem.ACCOUNTS_VISIBILITY_PREFERENCE_KEY, this._store)(() => updateToolBarActions()));
-			}
-		}
+	// 	if (update.activityActions) {
+	// 		this.activityToolbarDisposables.clear();
+	// 		if (this.activityActionsEnabled) {
+	// 			this.activityToolbarDisposables.add(this.storageService.onDidChangeValue(StorageScope.PROFILE, AccountsActivityActionViewItem.ACCOUNTS_VISIBILITY_PREFERENCE_KEY, this._store)(() => updateToolBarActions()));
+	// 		}
+	// 	}
 
-		updateToolBarActions();
-	}
+	// 	updateToolBarActions();
+	// }
 
 	override updateStyles(): void {
 		super.updateStyles();
