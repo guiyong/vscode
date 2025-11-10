@@ -173,7 +173,9 @@ export abstract class EditorTabsControl extends Themable implements IEditorTabsC
 	}
 
 	private get editorActionsEnabled(): boolean {
-		return this.groupsView.partOptions.editorActionsLocation === 'default' && this.groupsView.partOptions.showTabs !== 'none';
+		// DISABLED: Editor toolbar completely removed
+		return false;
+		// return this.groupsView.partOptions.editorActionsLocation === 'default' && this.groupsView.partOptions.showTabs !== 'none';
 	}
 
 	protected createEditorActionsToolBar(parent: HTMLElement, classes: string[]): void {
