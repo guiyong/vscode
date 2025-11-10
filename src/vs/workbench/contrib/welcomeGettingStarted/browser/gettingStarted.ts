@@ -905,8 +905,9 @@ export class GettingStartedPage extends EditorPane {
 		const leftColumn = $('.categories-column.categories-column-left', {},);
 		const rightColumn = $('.categories-column.categories-column-right', {},);
 
-		const startList = this.buildStartList();
-		const recentList = this.buildRecentlyOpenedList();
+		// DISABLED: Start and Recent lists removed
+		// const startList = this.buildStartList();
+		// const recentList = this.buildRecentlyOpenedList();
 		const gettingStartedList = this.buildGettingStartedWalkthroughsList();
 
 		const footer = $('.footer', {},
@@ -925,19 +926,20 @@ export class GettingStartedPage extends EditorPane {
 				reset(rightColumn);
 			}
 			setTimeout(() => this.categoriesPageScrollbar?.scanDomNode(), 50);
-			layoutRecentList();
+			// layoutRecentList(); // DISABLED
 		};
 
-		const layoutRecentList = () => {
-			if (this.container.classList.contains('noWalkthroughs')) {
-				recentList.setLimit(10);
-				reset(leftColumn, startList.getDomElement());
-				reset(rightColumn, recentList.getDomElement());
-			} else {
-				recentList.setLimit(5);
-				reset(leftColumn, startList.getDomElement(), recentList.getDomElement());
-			}
-		};
+		// DISABLED: Layout lists removed
+		// const layoutRecentList = () => {
+		// 	if (this.container.classList.contains('noWalkthroughs')) {
+		// 		recentList.setLimit(10);
+		// 		reset(leftColumn, startList.getDomElement());
+		// 		reset(rightColumn, recentList.getDomElement());
+		// 	} else {
+		// 		recentList.setLimit(5);
+		// 		reset(leftColumn, startList.getDomElement(), recentList.getDomElement());
+		// 	}
+		// };
 
 		gettingStartedList.onDidChange(layoutLists);
 		layoutLists();
