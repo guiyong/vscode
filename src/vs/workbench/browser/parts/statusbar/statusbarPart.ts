@@ -276,59 +276,69 @@ class StatusbarPart extends Part implements IStatusbarEntryContainer {
 	}
 
 	private doAddEntry(entry: IStatusbarEntry, id: string, alignment: StatusbarAlignment, priority: IStatusbarEntryPriority): IStatusbarEntryAccessor {
+		// DISABLED: Hide all status bar entries, return empty accessor
 		const disposables = new DisposableStore();
 
-		// View model item
-		const itemContainer = this.doCreateStatusItem(id, alignment);
-		const item = disposables.add(this.instantiationService.createInstance(StatusbarEntryItem, itemContainer, this.withEntryOverride(entry, id), this.hoverDelegate));
-
-		// View model entry
-		const viewModelEntry: IStatusbarViewModelEntry = new class implements IStatusbarViewModelEntry {
-			readonly id = id;
-			readonly extensionId = entry.extensionId;
-			readonly alignment = alignment;
-			readonly priority = priority;
-			readonly container = itemContainer;
-			readonly labelContainer = item.labelContainer;
-
-			get name() { return item.name; }
-			get hasCommand() { return item.hasCommand; }
+		// Return a no-op accessor that doesn't add anything to the view
+		return {
+			update: () => { },
+			dispose: () => { disposables.dispose(); }
 		};
 
-		// Add to view model
-		const { needsFullRefresh } = this.doAddOrRemoveModelEntry(viewModelEntry, true);
-		if (needsFullRefresh) {
-			this.appendStatusbarEntries();
-		} else {
-			this.appendStatusbarEntry(viewModelEntry);
-		}
+		// ORIGINAL CODE - COMMENTED OUT
+		// const disposables = new DisposableStore();
 
-		let lastEntry = entry;
-		const accessor: IStatusbarEntryAccessor = {
-			update: entry => {
-				lastEntry = entry;
-				item.update(this.withEntryOverride(entry, id));
-			},
-			dispose: () => {
-				const { needsFullRefresh } = this.doAddOrRemoveModelEntry(viewModelEntry, false);
-				if (needsFullRefresh) {
-					this.appendStatusbarEntries();
-				} else {
-					itemContainer.remove();
-					this.updateCompactEntries();
-				}
-				disposables.dispose();
-			}
-		};
+		// // View model item
+		// const itemContainer = this.doCreateStatusItem(id, alignment);
+		// const item = disposables.add(this.instantiationService.createInstance(StatusbarEntryItem, itemContainer, this.withEntryOverride(entry, id), this.hoverDelegate));
 
-		// React to overrides
-		disposables.add(this.onDidOverrideEntry.event(overrideEntryId => {
-			if (overrideEntryId === id) {
-				accessor.update(lastEntry);
-			}
-		}));
+		// // View model entry
+		// const viewModelEntry: IStatusbarViewModelEntry = new class implements IStatusbarViewModelEntry {
+		// 	readonly id = id;
+		// 	readonly extensionId = entry.extensionId;
+		// 	readonly alignment = alignment;
+		// 	readonly priority = priority;
+		// 	readonly container = itemContainer;
+		// 	readonly labelContainer = item.labelContainer;
 
-		return accessor;
+		// 	get name() { return item.name; }
+		// 	get hasCommand() { return item.hasCommand; }
+		// };
+
+		// // Add to view model
+		// const { needsFullRefresh } = this.doAddOrRemoveModelEntry(viewModelEntry, true);
+		// if (needsFullRefresh) {
+		// 	this.appendStatusbarEntries();
+		// } else {
+		// 	this.appendStatusbarEntry(viewModelEntry);
+		// }
+
+		// let lastEntry = entry;
+		// const accessor: IStatusbarEntryAccessor = {
+		// 	update: entry => {
+		// 		lastEntry = entry;
+		// 		item.update(this.withEntryOverride(entry, id));
+		// 	},
+		// 	dispose: () => {
+		// 		const { needsFullRefresh } = this.doAddOrRemoveModelEntry(viewModelEntry, false);
+		// 		if (needsFullRefresh) {
+		// 			this.appendStatusbarEntries();
+		// 		} else {
+		// 			itemContainer.remove();
+		// 			this.updateCompactEntries();
+		// 		}
+		// 		disposables.dispose();
+		// 	}
+		// };
+
+		// // React to overrides
+		// disposables.add(this.onDidOverrideEntry.event(overrideEntryId => {
+		// 	if (overrideEntryId === id) {
+		// 		accessor.update(lastEntry);
+		// 	}
+		// }));
+
+		// return accessor;
 	}
 
 	private doCreateStatusItem(id: string, alignment: StatusbarAlignment, ...extraClasses: string[]): HTMLElement {
@@ -410,12 +420,17 @@ class StatusbarPart extends Part implements IStatusbarEntryContainer {
 		const scopedContextKeyService = this._register(this.contextKeyService.createScoped(this.element));
 		StatusBarFocused.bindTo(scopedContextKeyService).set(true);
 
-		// Left items container
+		// MODIFIED: Only show "Ready" text, hide all other entries
+		// Left items container with "Ready" text
 		this.leftItemsContainer = $('.left-items.items-container');
+		const readyText = $('span.statusbar-item');
+		readyText.textContent = 'Ready';
+		readyText.style.paddingLeft = '10px';
+		this.leftItemsContainer.appendChild(readyText);
 		this.element.appendChild(this.leftItemsContainer);
 		this.element.tabIndex = 0;
 
-		// Right items container
+		// Right items container (empty)
 		this.rightItemsContainer = $('.right-items.items-container');
 		this.element.appendChild(this.rightItemsContainer);
 
@@ -424,8 +439,8 @@ class StatusbarPart extends Part implements IStatusbarEntryContainer {
 		this._register(Gesture.addTarget(parent));
 		this._register(addDisposableListener(parent, TouchEventType.Contextmenu, e => this.showContextMenu(e)));
 
-		// Initial status bar entries
-		this.createInitialStatusbarEntries();
+		// Initial status bar entries - DISABLED: Don't create any entries
+		// this.createInitialStatusbarEntries();
 
 		return this.element;
 	}
