@@ -53,7 +53,7 @@ quickAccessRegistry.registerQuickAccessProvider({
 //#region Menu contributions
 
 // Removed: Command Palette from View menu
-// Removed: Show All Commands from Help menu  
+// Removed: Show All Commands from Help menu
 // Removed: Open View from View menu
 
 MenuRegistry.appendMenuItem(MenuId.MenubarGoMenu, {

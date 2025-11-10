@@ -562,17 +562,17 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 
 		// Text Title - MODIFIED: Always show text title, never command center
 		// if (!this.isCommandCenterVisible) {
-			if (!isShowingTitleInNativeTitlebar) {
+		if (!isShowingTitleInNativeTitlebar) {
+			this.title.textContent = this.windowTitle.value;
+			this.titleDisposables.add(this.windowTitle.onDidChange(() => {
 				this.title.textContent = this.windowTitle.value;
-				this.titleDisposables.add(this.windowTitle.onDidChange(() => {
-					this.title.textContent = this.windowTitle.value;
-					if (this.lastLayoutDimensions) {
-						this.updateLayout(this.lastLayoutDimensions); // layout menubar and other renderings in the titlebar
-					}
-				}));
-			} else {
-				reset(this.title);
-			}
+				if (this.lastLayoutDimensions) {
+					this.updateLayout(this.lastLayoutDimensions); // layout menubar and other renderings in the titlebar
+				}
+			}));
+		} else {
+			reset(this.title);
+		}
 		// }
 
 		// Menu Title - DISABLED: Command center removed
