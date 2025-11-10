@@ -103,32 +103,34 @@ Registry.as<IDragAndDropContributionRegistry>(DragAndDropExtensions.DragAndDropC
 });
 
 // Register views
-const VIEW_CONTAINER = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({
-	id: TERMINAL_VIEW_ID,
-	title: nls.localize2('terminal', "Terminal"),
-	icon: terminalViewIcon,
-	ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [TERMINAL_VIEW_ID, { mergeViewWithContainerWhenSingleView: true }]),
-	storageId: TERMINAL_VIEW_ID,
-	hideIfEmpty: true,
-	order: 3,
-}, ViewContainerLocation.Panel, { doNotRegisterOpenCommand: true, isDefault: true });
-Registry.as<IViewsRegistry>(ViewContainerExtensions.ViewsRegistry).registerViews([{
-	id: TERMINAL_VIEW_ID,
-	name: nls.localize2('terminal', "Terminal"),
-	containerIcon: terminalViewIcon,
-	canToggleVisibility: true,
-	canMoveView: true,
-	ctorDescriptor: new SyncDescriptor(TerminalViewPane),
-	openCommandActionDescriptor: {
-		id: TerminalCommandId.Toggle,
-		mnemonicTitle: nls.localize({ key: 'miToggleIntegratedTerminal', comment: ['&& denotes a mnemonic'] }, "&&Terminal"),
-		keybindings: {
-			primary: KeyMod.CtrlCmd | KeyCode.Backquote,
-			mac: { primary: KeyMod.WinCtrl | KeyCode.Backquote }
-		},
-		order: 3
-	}
-}], VIEW_CONTAINER);
+// DISABLED: Terminal view container removed - only Output panel needed
+// const VIEW_CONTAINER = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry).registerViewContainer({
+// 	id: TERMINAL_VIEW_ID,
+// 	title: nls.localize2('terminal', "Terminal"),
+// 	icon: terminalViewIcon,
+// 	ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [TERMINAL_VIEW_ID, { mergeViewWithContainerWhenSingleView: true }]),
+// 	storageId: TERMINAL_VIEW_ID,
+// 	hideIfEmpty: true,
+// 	order: 3,
+// }, ViewContainerLocation.Panel, { doNotRegisterOpenCommand: true, isDefault: true });
+const VIEW_CONTAINER = null!; // Dummy to avoid breaking code that references this
+// Registry.as<IViewsRegistry>(ViewContainerExtensions.ViewsRegistry).registerViews([{
+// 	id: TERMINAL_VIEW_ID,
+// 	name: nls.localize2('terminal', "Terminal"),
+// 	containerIcon: terminalViewIcon,
+// 	canToggleVisibility: true,
+// 	canMoveView: true,
+// 	ctorDescriptor: new SyncDescriptor(TerminalViewPane),
+// 	openCommandActionDescriptor: {
+// 		id: TerminalCommandId.Toggle,
+// 		mnemonicTitle: nls.localize({ key: 'miToggleIntegratedTerminal', comment: ['&& denotes a mnemonic'] }, "&&Terminal"),
+// 		keybindings: {
+// 			primary: KeyMod.CtrlCmd | KeyCode.Backquote,
+// 			mac: { primary: KeyMod.WinCtrl | KeyCode.Backquote }
+// 		},
+// 		order: 3
+// 	}
+// }], VIEW_CONTAINER);
 
 registerTerminalActions();
 
