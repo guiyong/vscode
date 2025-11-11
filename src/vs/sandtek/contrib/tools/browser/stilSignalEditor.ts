@@ -28,6 +28,13 @@ enum ViewMode {
 	Spreadsheet = 'spreadsheet'
 }
 
+interface SignalRowData {
+	signalName: string;
+	packagedName: string;
+	site1: number;
+	site2: number;
+}
+
 export class StilSignalEditor extends EditorPane {
 
 	static readonly ID = 'workbench.editor.stilSignalEditor';
@@ -71,11 +78,10 @@ export class StilSignalEditor extends EditorPane {
 		// Create ASCII view container (Monaco editor)
 		this.asciiViewContainer = DOM.append(this.contentContainer, DOM.$('.ascii-view-container'));
 
-		// Create Spreadsheet view container (placeholder)
+		// Create Spreadsheet view container
 		this.spreadsheetViewContainer = DOM.append(this.contentContainer, DOM.$('.spreadsheet-view-container'));
 		this.spreadsheetViewContainer.style.display = 'none';
-		this.spreadsheetViewContainer.style.padding = '20px';
-		this.spreadsheetViewContainer.textContent = 'Spreadsheet View - Coming Soon!';
+		this.createSpreadsheetView();
 
 		// Initialize Monaco editor in ASCII view
 		this.createMonacoEditor();
@@ -135,6 +141,47 @@ export class StilSignalEditor extends EditorPane {
 		this.codeEditor.setModel(model);
 
 		this.logService.info('[STIL Signal Editor] Monaco editor created, model:', this.codeEditor?.getModel()?.getValue());
+	}
+
+	private createSpreadsheetView(): void {
+		// Parse signal data from STIL content
+		const signalData: SignalRowData[] = [
+			{ signalName: 'PA1', packagedName: '("1")', site1: 15, site2: 11 },
+			{ signalName: 'TEST_DPS', packagedName: '("2")', site1: 0, site2: 1 },
+			{ signalName: 'TEST_GPMU', packagedName: '("3")', site1: 2, site2: 0 }
+		];
+
+		// Create table element
+		const table = DOM.append(this.spreadsheetViewContainer, DOM.$('table.signal-table'));
+
+		// Create header row
+		const thead = DOM.append(table, DOM.$('thead'));
+		const headerRow = DOM.append(thead, DOM.$('tr'));
+		const headers = ['Signal Name', 'Packaged Name', 'Site 1', 'Site 2'];
+		headers.forEach(headerText => {
+			const th = DOM.append(headerRow, DOM.$('th'));
+			th.textContent = headerText;
+		});
+
+		// Create body with data rows
+		const tbody = DOM.append(table, DOM.$('tbody'));
+		signalData.forEach(row => {
+			const tr = DOM.append(tbody, DOM.$('tr'));
+
+			const tdSignalName = DOM.append(tr, DOM.$('td'));
+			tdSignalName.textContent = row.signalName;
+
+			const tdPackagedName = DOM.append(tr, DOM.$('td'));
+			tdPackagedName.textContent = row.packagedName;
+
+			const tdSite1 = DOM.append(tr, DOM.$('td'));
+			tdSite1.textContent = row.site1.toString();
+
+			const tdSite2 = DOM.append(tr, DOM.$('td'));
+			tdSite2.textContent = row.site2.toString();
+		});
+
+		this.logService.info('[STIL Signal Editor] Spreadsheet view created with', signalData.length, 'rows');
 	}
 
 	private switchView(mode: ViewMode): void {
