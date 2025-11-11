@@ -46,32 +46,84 @@ export class ToolsView extends ViewPane {
 		const content = document.createElement('div');
 		content.classList.add('tools-view-content');
 
-		// Create icon-only button for STIL Signal Editor
-		const buttonContainer = document.createElement('div');
-		buttonContainer.classList.add('tools-view-actions');
+		// Create tools grid
+		const toolsGrid = document.createElement('div');
+		toolsGrid.classList.add('tools-grid');
 
-		const button = document.createElement('a');
-		button.classList.add('action-label', 'codicon', `codicon-${Codicon.pulse.id}`);
-		button.setAttribute('role', 'button');
-		button.setAttribute('tabindex', '0');
-		button.setAttribute('title', 'Edit STIL Signals');
-		button.setAttribute('aria-label', 'Edit STIL Signals');
+		// Define tools
+		const tools = [
+			{ icon: Codicon.pulse, title: 'STIL Signal Editor', description: 'Edit STIL test signals', action: () => this.openStilSignalEditor() },
+			{ icon: Codicon.chip, title: 'Pattern Generator', description: 'Generate test patterns', action: () => this.showToolNotImplemented('Pattern Generator') },
+			{ icon: Codicon.graphLine, title: 'Waveform Viewer', description: 'View signal waveforms', action: () => this.showToolNotImplemented('Waveform Viewer') },
+			{ icon: Codicon.circuitBoard, title: 'Pin Mapper', description: 'Map device pins', action: () => this.showToolNotImplemented('Pin Mapper') },
+			{ icon: Codicon.graph, title: 'Timing Analyzer', description: 'Analyze signal timing', action: () => this.showToolNotImplemented('Timing Analyzer') },
+			{ icon: Codicon.database, title: 'Vector Database', description: 'Manage test vectors', action: () => this.showToolNotImplemented('Vector Database') },
+			{ icon: Codicon.beaker, title: 'Test Builder', description: 'Build test sequences', action: () => this.showToolNotImplemented('Test Builder') },
+			{ icon: Codicon.dashboard, title: 'Coverage Report', description: 'View test coverage', action: () => this.showToolNotImplemented('Coverage Report') },
+			{ icon: Codicon.package, title: 'Device Library', description: 'Browse device models', action: () => this.showToolNotImplemented('Device Library') },
+			{ icon: Codicon.tools, title: 'Debug Console', description: 'Hardware debug tools', action: () => this.showToolNotImplemented('Debug Console') },
+			{ icon: Codicon.server, title: 'Tester Config', description: 'Configure test equipment', action: () => this.showToolNotImplemented('Tester Config') },
+			{ icon: Codicon.checklist, title: 'Test Runner', description: 'Execute test suites', action: () => this.showToolNotImplemented('Test Runner') }
+		];
 
-		this._register(addDisposableListener(button, 'click', () => {
-			this.openStilSignalEditor();
-		}));
+		// Render tool items
+		tools.forEach(tool => {
+			const toolItem = this.createToolItem(tool.icon, tool.title, tool.description, tool.action);
+			toolsGrid.appendChild(toolItem);
+		});
 
-		this._register(addDisposableListener(button, 'keydown', (e) => {
+		content.appendChild(toolsGrid);
+		container.appendChild(content);
+	}
+
+	private createToolItem(icon: Codicon, title: string, description: string, action: () => void): HTMLElement {
+		const item = document.createElement('div');
+		item.classList.add('tool-item');
+		item.setAttribute('role', 'button');
+		item.setAttribute('tabindex', '0');
+		item.setAttribute('aria-label', title);
+
+		// Icon container
+		const iconContainer = document.createElement('div');
+		iconContainer.classList.add('tool-icon');
+		const iconElement = document.createElement('div');
+		iconElement.classList.add('codicon', `codicon-${icon.id}`);
+		iconContainer.appendChild(iconElement);
+
+		// Text container
+		const textContainer = document.createElement('div');
+		textContainer.classList.add('tool-text');
+
+		const titleElement = document.createElement('div');
+		titleElement.classList.add('tool-title');
+		titleElement.textContent = title;
+
+		const descElement = document.createElement('div');
+		descElement.classList.add('tool-description');
+		descElement.textContent = description;
+
+		textContainer.appendChild(titleElement);
+		textContainer.appendChild(descElement);
+
+		item.appendChild(iconContainer);
+		item.appendChild(textContainer);
+
+		// Event listeners
+		this._register(addDisposableListener(item, 'click', () => action()));
+
+		this._register(addDisposableListener(item, 'keydown', (e) => {
 			const event = new StandardKeyboardEvent(e);
 			if (event.equals(KeyCode.Enter) || event.equals(KeyCode.Space)) {
 				e.preventDefault();
-				this.openStilSignalEditor();
+				action();
 			}
 		}));
 
-		buttonContainer.appendChild(button);
-		content.appendChild(buttonContainer);
-		container.appendChild(content);
+		return item;
+	}
+
+	private showToolNotImplemented(toolName: string): void {
+		console.log(`${toolName} - Not yet implemented`);
 	}
 
 	private async openStilSignalEditor(): Promise<void> {

@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import './media/stilSignalEditor.css';
 import { EditorPane } from '../../../../workbench/browser/parts/editor/editorPane.js';
 import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
 import { IThemeService } from '../../../../platform/theme/common/themeService.js';
@@ -13,17 +14,39 @@ import { IEditorOpenContext } from '../../../../workbench/common/editor.js';
 import { IEditorGroup } from '../../../../workbench/services/editor/common/editorGroupsService.js';
 import { IEditorOptions } from '../../../../platform/editor/common/editor.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
+import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+import { ICodeEditor } from '../../../../editor/browser/editorBrowser.js';
+import * as DOM from '../../../../base/browser/dom.js';
+import { ActionBar, ActionsOrientation } from '../../../../base/browser/ui/actionbar/actionbar.js';
+import { Action } from '../../../../base/common/actions.js';
+import { CodeEditorWidget } from '../../../../editor/browser/widget/codeEditor/codeEditorWidget.js';
+
+enum ViewMode {
+	ASCII = 'ascii',
+	Spreadsheet = 'spreadsheet'
+}
 
 export class StilSignalEditor extends EditorPane {
 
 	static readonly ID = 'workbench.editor.stilSignalEditor';
+
+	private headerContainer!: HTMLElement;
+	private viewSwitcherBar!: ActionBar;
+	private asciiViewAction!: Action;
+	private spreadsheetViewAction!: Action;
+	private contentContainer!: HTMLElement;
+	private asciiViewContainer!: HTMLElement;
+	private spreadsheetViewContainer!: HTMLElement;
+	private codeEditor: ICodeEditor | null = null;
+	private currentViewMode: ViewMode = ViewMode.ASCII;
 
 	constructor(
 		group: IEditorGroup,
 		@ITelemetryService telemetryService: ITelemetryService,
 		@IThemeService themeService: IThemeService,
 		@IStorageService storageService: IStorageService,
-		@ILogService private readonly logService: ILogService
+		@ILogService private readonly logService: ILogService,
+		@IInstantiationService private readonly instantiationService: IInstantiationService
 	) {
 		super(StilSignalEditor.ID, group, telemetryService, themeService, storageService);
 	}
@@ -31,12 +54,79 @@ export class StilSignalEditor extends EditorPane {
 	protected createEditor(parent: HTMLElement): void {
 		this.logService.info('[STIL Signal Editor] Creating editor UI');
 
-		const container = document.createElement('div');
-		container.style.padding = '20px';
-		container.textContent = 'STIL Signal Editor - Coming Soon!';
-		parent.appendChild(container);
+		// Create header with view switcher
+		this.createHeader(parent);
+
+		// Create content container
+		this.contentContainer = DOM.append(parent, DOM.$('.stil-editor-content'));
+
+		// Create ASCII view container (Monaco editor)
+		this.asciiViewContainer = DOM.append(this.contentContainer, DOM.$('.ascii-view-container'));
+
+		// Create Spreadsheet view container (placeholder)
+		this.spreadsheetViewContainer = DOM.append(this.contentContainer, DOM.$('.spreadsheet-view-container'));
+		this.spreadsheetViewContainer.style.display = 'none';
+		this.spreadsheetViewContainer.style.padding = '20px';
+		this.spreadsheetViewContainer.textContent = 'Spreadsheet View - Coming Soon!';
+
+		// Initialize Monaco editor in ASCII view
+		this.createMonacoEditor();
 
 		this.logService.info('[STIL Signal Editor] Editor UI created successfully');
+	}
+
+	private createHeader(parent: HTMLElement): void {
+		this.headerContainer = DOM.append(parent, DOM.$('.stil-editor-header'));
+
+		const viewSwitcherContainer = DOM.append(this.headerContainer, DOM.$('.view-switcher-container'));
+		this.viewSwitcherBar = this._register(new ActionBar(viewSwitcherContainer, {
+			orientation: ActionsOrientation.HORIZONTAL,
+			focusOnlyEnabledItems: true,
+			ariaLabel: 'View Switcher',
+			ariaRole: 'tablist'
+		}));
+
+		this.asciiViewAction = this._register(new Action('asciiView', 'ASCII', '.view-tab', true, () => this.switchView(ViewMode.ASCII)));
+		this.asciiViewAction.checked = true;
+
+		this.spreadsheetViewAction = this._register(new Action('spreadsheetView', 'Spreadsheet', '.view-tab', true, () => this.switchView(ViewMode.Spreadsheet)));
+
+		this.viewSwitcherBar.push([this.asciiViewAction, this.spreadsheetViewAction]);
+	}
+
+	private createMonacoEditor(): void {
+		const editorOptions = {
+			value: '// STIL Signal definitions\n// Edit your signals here\n',
+			language: 'plaintext',
+			lineNumbers: 'on' as const,
+			minimap: { enabled: false }
+		};
+
+		this.codeEditor = this._register(this.instantiationService.createInstance(
+			CodeEditorWidget,
+			this.asciiViewContainer,
+			editorOptions,
+			{}
+		));
+	}
+
+	private switchView(mode: ViewMode): void {
+		this.currentViewMode = mode;
+
+		if (mode === ViewMode.ASCII) {
+			this.asciiViewAction.checked = true;
+			this.spreadsheetViewAction.checked = false;
+			this.asciiViewContainer.style.display = '';
+			this.spreadsheetViewContainer.style.display = 'none';
+			this.codeEditor?.layout();
+			this.logService.info('[STIL Signal Editor] Switched to ASCII view');
+		} else {
+			this.asciiViewAction.checked = false;
+			this.spreadsheetViewAction.checked = true;
+			this.asciiViewContainer.style.display = 'none';
+			this.spreadsheetViewContainer.style.display = '';
+			this.logService.info('[STIL Signal Editor] Switched to Spreadsheet view');
+		}
 	}
 
 	override async setInput(input: StilSignalEditorInput, options: IEditorOptions | undefined, context: IEditorOpenContext, token: CancellationToken): Promise<void> {
@@ -49,6 +139,20 @@ export class StilSignalEditor extends EditorPane {
 	}
 
 	override layout(dimension: { width: number; height: number }): void {
-		// Layout logic will be added here
+		if (this.codeEditor && this.currentViewMode === ViewMode.ASCII) {
+			const headerHeight = this.headerContainer.offsetHeight;
+			this.codeEditor.layout({
+				width: dimension.width,
+				height: dimension.height - headerHeight
+			});
+		}
+	}
+
+	override dispose(): void {
+		if (this.codeEditor) {
+			this.codeEditor.dispose();
+			this.codeEditor = null;
+		}
+		super.dispose();
 	}
 }

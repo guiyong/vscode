@@ -59,7 +59,6 @@ MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
 // Removed: Selection menu
 // Removed: Go menu
 // Removed: Terminal menu
-// Removed: Help menu
 
 MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
 	submenu: MenuId.MenubarViewMenu,
@@ -80,6 +79,16 @@ MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
 	},
 	when: IsMacNativeContext,
 	order: 9
+});
+
+MenuRegistry.appendMenuItem(MenuId.MenubarMainMenu, {
+	submenu: MenuId.MenubarHelpMenu,
+	title: {
+		value: 'Help',
+		original: 'Help',
+		mnemonicTitle: localize({ key: 'mHelp', comment: ['&& denotes a mnemonic'] }, "&&Help")
+	},
+	order: 10
 });
 
 export abstract class MenubarControl extends Disposable {
