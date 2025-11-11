@@ -20,6 +20,8 @@ import * as DOM from '../../../../base/browser/dom.js';
 import { ActionBar, ActionsOrientation } from '../../../../base/browser/ui/actionbar/actionbar.js';
 import { Action } from '../../../../base/common/actions.js';
 import { CodeEditorWidget } from '../../../../editor/browser/widget/codeEditor/codeEditorWidget.js';
+import { IModelService } from '../../../../editor/common/services/model.js';
+import { URI } from '../../../../base/common/uri.js';
 
 enum ViewMode {
 	ASCII = 'ascii',
@@ -46,13 +48,19 @@ export class StilSignalEditor extends EditorPane {
 		@IThemeService themeService: IThemeService,
 		@IStorageService storageService: IStorageService,
 		@ILogService private readonly logService: ILogService,
-		@IInstantiationService private readonly instantiationService: IInstantiationService
+		@IInstantiationService private readonly instantiationService: IInstantiationService,
+		@IModelService private readonly modelService: IModelService
 	) {
 		super(StilSignalEditor.ID, group, telemetryService, themeService, storageService);
 	}
 
 	protected createEditor(parent: HTMLElement): void {
 		this.logService.info('[STIL Signal Editor] Creating editor UI');
+
+		// Set parent to fill available space
+		parent.style.display = 'flex';
+		parent.style.flexDirection = 'column';
+		parent.style.height = '100%';
 
 		// Create header with view switcher
 		this.createHeader(parent);
@@ -95,11 +103,25 @@ export class StilSignalEditor extends EditorPane {
 	}
 
 	private createMonacoEditor(): void {
+		const stilContent = `SignalMap DemoSignalMap {
+	SiteMap 1, 2;
+	PA1 ("1") 15,11;
+	TEST_DPS ("2") 0,1;
+	TEST_GPMU ("3") 2,0;
+}`;
+
+		this.logService.info('[STIL Signal Editor] Creating Monaco editor with content:', stilContent);
+
+		// Create a text model
+		const uri = URI.parse('inmemory://stil-signals-editor');
+		const model = this.modelService.createModel(stilContent, null, uri);
+		this._register(model);
+
 		const editorOptions = {
-			value: '// STIL Signal definitions\n// Edit your signals here\n',
-			language: 'plaintext',
 			lineNumbers: 'on' as const,
-			minimap: { enabled: false }
+			minimap: { enabled: false },
+			automaticLayout: false,
+			scrollBeyondLastLine: false
 		};
 
 		this.codeEditor = this._register(this.instantiationService.createInstance(
@@ -108,6 +130,11 @@ export class StilSignalEditor extends EditorPane {
 			editorOptions,
 			{}
 		));
+
+		// Set the model on the editor
+		this.codeEditor.setModel(model);
+
+		this.logService.info('[STIL Signal Editor] Monaco editor created, model:', this.codeEditor?.getModel()?.getValue());
 	}
 
 	private switchView(mode: ViewMode): void {
@@ -139,11 +166,15 @@ export class StilSignalEditor extends EditorPane {
 	}
 
 	override layout(dimension: { width: number; height: number }): void {
+		this.logService.info(`[STIL Signal Editor] layout called: ${dimension.width}x${dimension.height}`);
+		
 		if (this.codeEditor && this.currentViewMode === ViewMode.ASCII) {
-			const headerHeight = this.headerContainer.offsetHeight;
+			const headerHeight = this.headerContainer?.offsetHeight || 0;
+			const editorHeight = dimension.height - headerHeight;
+			this.logService.info(`[STIL Signal Editor] Editor layout: ${dimension.width}x${editorHeight} (header: ${headerHeight})`);
 			this.codeEditor.layout({
 				width: dimension.width,
-				height: dimension.height - headerHeight
+				height: editorHeight
 			});
 		}
 	}

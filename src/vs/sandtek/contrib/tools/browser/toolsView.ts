@@ -56,13 +56,7 @@ export class ToolsView extends ViewPane {
 			{ icon: Codicon.chip, title: 'Pattern Generator', description: 'Generate test patterns', action: () => this.showToolNotImplemented('Pattern Generator') },
 			{ icon: Codicon.graphLine, title: 'Waveform Viewer', description: 'View signal waveforms', action: () => this.showToolNotImplemented('Waveform Viewer') },
 			{ icon: Codicon.circuitBoard, title: 'Pin Mapper', description: 'Map device pins', action: () => this.showToolNotImplemented('Pin Mapper') },
-			{ icon: Codicon.graph, title: 'Timing Analyzer', description: 'Analyze signal timing', action: () => this.showToolNotImplemented('Timing Analyzer') },
 			{ icon: Codicon.database, title: 'Vector Database', description: 'Manage test vectors', action: () => this.showToolNotImplemented('Vector Database') },
-			{ icon: Codicon.beaker, title: 'Test Builder', description: 'Build test sequences', action: () => this.showToolNotImplemented('Test Builder') },
-			{ icon: Codicon.dashboard, title: 'Coverage Report', description: 'View test coverage', action: () => this.showToolNotImplemented('Coverage Report') },
-			{ icon: Codicon.package, title: 'Device Library', description: 'Browse device models', action: () => this.showToolNotImplemented('Device Library') },
-			{ icon: Codicon.tools, title: 'Debug Console', description: 'Hardware debug tools', action: () => this.showToolNotImplemented('Debug Console') },
-			{ icon: Codicon.server, title: 'Tester Config', description: 'Configure test equipment', action: () => this.showToolNotImplemented('Tester Config') },
 			{ icon: Codicon.checklist, title: 'Test Runner', description: 'Execute test suites', action: () => this.showToolNotImplemented('Test Runner') }
 		];
 

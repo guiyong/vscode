@@ -1,0 +1,67 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.stil-editor-header {
+	display: flex;
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--vscode-editorGroup-border);
+}
+
+.view-switcher-container {
+	display: flex;
+	gap: 4px;
+}
+
+.view-switcher-container .monaco-action-bar {
+	height: 100%;
+}
+
+.view-switcher-container .action-label {
+	padding: 6px 12px;
+	cursor: pointer;
+	font-size: 13px;
+	text-decoration: none;
+	border-radius: 0;
+	background: transparent;
+	opacity: 0.9;
+	color: var(--vscode-foreground);
+	border-bottom: 1px solid transparent;
+}
+
+.view-switcher-container .action-label:hover {
+	opacity: 1;
+	border-bottom: 1px solid var(--vscode-panelTitle-activeBorder);
+}
+
+.view-switcher-container .action-label.checked {
+	opacity: 1;
+	color: var(--vscode-settings-headerForeground);
+	border-bottom: 1px solid var(--vscode-settings-headerForeground);
+}
+
+.view-switcher-container .action-label:focus {
+	border-bottom: 1px solid var(--vscode-focusBorder);
+}
+
+.view-switcher-container .action-label.checked:not(:focus) {
+	border-bottom-color: var(--vscode-settings-headerForeground);
+}
+
+.stil-editor-content {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	overflow: hidden;
+}
+
+.ascii-view-container {
+	flex: 1;
+	overflow: hidden;
+}
+
+.spreadsheet-view-container {
+	flex: 1;
+	overflow: auto;
+}
